@@ -54,7 +54,7 @@ class ScalarFunction:
                 raw_vals.append(v.data)
             else:
                 scalars.append(minitorch.scalar.Scalar(v))
-                raw_vals.append(minitorch.scalar.Scalar(v))
+                raw_vals.append(v)
 
         # Create the context.
         ctx = Context(False)
@@ -135,7 +135,7 @@ class Neg(ScalarFunction):
 
     @staticmethod
     def backward(ctx: Context, d_output: float) -> float:
-        return operators.neg(d_output)
+        return -d_output
 
 
 class Sigmoid(ScalarFunction):

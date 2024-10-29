@@ -49,7 +49,7 @@ def add(x: float, y: float) -> float:
 
 def neg(x: float) -> float:
     "$f(x) = -x$"
-    return -x
+    return -1.0 *x
 
 
 def lt(x: float, y: float) -> float:
@@ -95,7 +95,7 @@ def relu(x: float) -> float:
 
     (See https://en.wikipedia.org/wiki/Rectifier_(neural_networks) .)
     """
-    return x * (x > 0)
+    return float(x * (x > 0))
 
 
 EPS = 1e-6
@@ -118,17 +118,17 @@ def log_back(x: float, d: float) -> float:
 
 def inv(x: float) -> float:
     "$f(x) = 1/x$"
-    return 1 / x
+    return 1.0 / x
 
 
 def inv_back(x: float, d: float) -> float:
     r"If $f(x) = 1/x$ compute $d \times f'(x)$"
-    return -d / (x ** 2 + EPS)
+    return -1.0 * d / (x ** 2 + EPS)
 
 
 def relu_back(x: float, d: float) -> float:
     r"If $f = relu$ compute $d \times f'(x)$"
-    return d * (x > 0)
+    return float(d * (x > 0))
 
 
 # ## Task 0.3
