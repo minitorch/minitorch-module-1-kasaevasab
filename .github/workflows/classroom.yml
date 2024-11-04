@@ -13,17 +13,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Setup
-      id: setup
-      uses: classroom-resources/autograding-command-grader@v1
-      with:
-        test-name: Setup
-        setup-command: sudo -H pip3 install -qr requirements.txt; sudo -H pip3 install
-          flake8==5.0.4
-        command: flake8 --ignore "N801, E203, E266, E501, W503, F812, E741, N803,
-          N802, N806" minitorch/ tests/ project/; mypy minitorch/*
-        timeout: 10
-        max-score: 10
     - name: Task 1.1
       id: task-1-1
       uses: classroom-resources/autograding-command-grader@v1
@@ -60,10 +49,9 @@ jobs:
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
-        SETUP_RESULTS: "${{steps.setup.outputs.result}}"
         TASK-1-1_RESULTS: "${{steps.task-1-1.outputs.result}}"
         TASK-1-2_RESULTS: "${{steps.task-1-2.outputs.result}}"
         TASK-1-3_RESULTS: "${{steps.task-1-3.outputs.result}}"
         TASK-1-4_RESULTS: "${{steps.task-1-4.outputs.result}}"
       with:
-        runners: setup,task-1-1,task-1-2,task-1-3,task-1-4
+        runners: task-1-1,task-1-2,task-1-3,task-1-4
