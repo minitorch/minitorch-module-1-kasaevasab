@@ -63,9 +63,23 @@ def topological_sort(variable: Variable) -> Iterable[Variable]:
     Returns:
         Non-constant Variables in topological order starting from the right.
     """
-    # TODO: Implement for Task 1.4.
-    raise NotImplementedError("Need to implement for Task 1.4")
+    
+    used = set()
+    topological = []
 
+    def dfs(v: Variable):
+        if v in used:
+            return
+        used.add(v)
+        for parent in v.parents:
+            dfs(parent)
+        if not v.is_constant():
+            topological.append(v)
+        
+    dfs(variable)
+    topological.reverse()
+    return topological
+        
 
 def backpropagate(variable: Variable, deriv: Any) -> None:
     """
@@ -78,8 +92,20 @@ def backpropagate(variable: Variable, deriv: Any) -> None:
 
     No return. Should write to its results to the derivative values of each leaf through `accumulate_derivative`.
     """
-    # TODO: Implement for Task 1.4.
-    raise NotImplementedError("Need to implement for Task 1.4")
+    
+    topological = topological_sort(variable)
+    all_derivatives = {variable.unique_id: deriv}
+    
+    for var in topological:    # all the edges are reversen comparing to classical graph (cause we go to the parent not the children)
+        d_output = all_derivatives.get(var.unique_id, 0)
+        if var.is_leaf():
+            var.accumulate_derivative(d_output)
+        else:
+            for parent, parent_deriv in var.chain_rule(d_output):
+                if parent.unique_id not in all_derivatives:
+                    all_derivatives[parent.unique_id] = parent_deriv
+                else:
+                    all_derivatives[parent.unique_id] += parent_deriv
 
 
 @dataclass
